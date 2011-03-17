@@ -22,7 +22,7 @@ module Scorer
         character_score = 0.1
       else
         return 0 unless fuzziness
-        fuzzies += 1 - fuzziness;
+        fuzzies += 1 - fuzziness
         next
       end
 
@@ -35,7 +35,7 @@ module Scorer
       if index_in_string == 0
         # Increase the score when matching first character of the
         # remainder of the string
-        character_score += 0.6;
+        character_score += 0.6
 
         # If match is the first character of the string
         # & the first character of abbreviation, add a
@@ -66,7 +66,7 @@ module Scorer
     final_score = (word_score + abbreviation_score) / 2.0
 
     # Penalize any fuzzies
-    final_score = final_score / fuzzies;
+    final_score = final_score / fuzzies
 
     # Award common prefix bonus if possible
     if should_award_common_prefix_bonus && (final_score + 0.15 < 1)
