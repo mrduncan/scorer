@@ -29,7 +29,7 @@ module Scorer
       end
 
       # Same case bonus.
-      character_score += 0.1 if string[index_in_string] == byte
+      character_score += 0.1 if string[index_in_string].chr == char
 
       # Consecutive letter & start-of-string bonus
       if index_in_string == 0
@@ -46,7 +46,7 @@ module Scorer
       # Acronym Bonus
       # Weighing Logic: Typing the first character of an acronym is as if you
       # preceded it with two perfect character matches.
-      if string[index_in_string - 1] == 32  # " ".ord == 32
+      if string[index_in_string - 1].chr == " "
         character_score += 0.8
       end
 
