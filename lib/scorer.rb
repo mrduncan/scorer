@@ -6,7 +6,7 @@ module Scorer
     string = self
     string_length = string.length.to_f
     total_character_score = 0
-    should_award_common_prefix_bonus = false
+    common_prefix_bonus = false
     fuzzies = 1
 
     # Walk through abbreviation and add up scores
@@ -40,7 +40,7 @@ module Scorer
         # If match is the first character of the string
         # & the first character of abbreviation, add a
         # start-of-string match bonus.
-        should_award_common_prefix_bonus = true if first_char_in_abbreviation
+        common_prefix_bonus = true if first_char_in_abbreviation
       end
 
       # Acronym Bonus
@@ -71,7 +71,7 @@ module Scorer
     final_score = final_score / fuzzies
 
     # Award common prefix bonus if possible
-    if should_award_common_prefix_bonus && (final_score + 0.15 < 1)
+    if common_prefix_bonus && (final_score + 0.15 < 1)
       final_score += 0.15
     end
 
