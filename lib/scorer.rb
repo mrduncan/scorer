@@ -10,10 +10,12 @@ module Scorer
     fuzzies = 1
 
     # Walk through abbreviation and add up scores
-    abbreviation.chars.each_with_index do |c, i|
+    first_char_in_abbreviation = true
+    abbreviation.each_byte do |byte|
       # Find the index of current character (case-insensitive) in remaining part
       # of string.
-      indexes = [string.index(c.downcase), string.index(c.upcase)]
+      char = byte.chr
+      indexes = [string.index(char.downcase), string.index(char.upcase)]
       indexes = indexes - [nil]
       index_in_string = indexes.min
 
@@ -27,9 +29,7 @@ module Scorer
       end
 
       # Same case bonus.
-      if string[index_in_string].chr == c
-        character_score += 0.1
-      end
+      character_score += 1 if string[index_in_string] == byte
 
       # Consecutive letter & start-of-string bonus
       if index_in_string == 0
@@ -40,13 +40,13 @@ module Scorer
         # If match is the first character of the string
         # & the first character of abbreviation, add a
         # start-of-string match bonus.
-        should_award_common_prefix_bonus = true if i == 0
+        should_award_common_prefix_bonus = true if first_char_in_abbreviation
       end
 
       # Acronym Bonus
       # Weighing Logic: Typing the first character of an acronym is as if you
       # preceded it with two perfect character matches.
-      if string[index_in_string - 1].chr == ' '
+      if string[index_in_string - 1] == 32  # " ".ord == 32
         character_score += 0.8
       end
 
@@ -56,6 +56,8 @@ module Scorer
 
       # Add to total character score.
       total_character_score += character_score
+
+      first_char_in_abbreviation = false
     end
 
     abbreviation_score = total_character_score / abbreviation.length
