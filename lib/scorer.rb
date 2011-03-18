@@ -29,7 +29,7 @@ module Scorer
       end
 
       # Same case bonus.
-      character_score += 1 if string[index_in_string] == byte
+      character_score += 0.1 if string[index_in_string] == byte
 
       # Consecutive letter & start-of-string bonus
       if index_in_string == 0
